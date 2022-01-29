@@ -10,7 +10,11 @@ public interface BookManagementService {
 	List<Book> getBookByAuthor(int authorId);
 
 	List<Book> getBooks();
-
-	Book getBookById(int bookIdToBorrow);
+	
+	List<Book> getAvailableBooks();
+	
+	List<String> getAuthors();
+	
+	List<Book> getBorrowedBooks(int userId);
 
 }

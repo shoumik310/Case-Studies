@@ -102,4 +102,9 @@ public class LibraryLibrarian implements User {
 		throw new InvalidUserTypeException("Fine is not applicable for Librarian");
 	}
 
+	@Override
+	public String toString() {
+		return "User id: " + id + "\t Name: " + firstName + " " + lastName + "\t Email=" + email;
+	}
+
 }

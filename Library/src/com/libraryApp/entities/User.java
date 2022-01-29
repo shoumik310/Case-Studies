@@ -16,6 +16,8 @@ public interface User {
 	void setMembershipType(String membershipType) throws InvalidUserTypeException;
 
 	void setNumberBorrowed(int numberBorrowed) throws InvalidUserTypeException;
+	
+	int getId();
 
 	String getMembershipType() throws InvalidUserTypeException;
 

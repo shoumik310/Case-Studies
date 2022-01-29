@@ -12,8 +12,7 @@ public class AddAuthorMenu implements Menu {
 
 	@Override
 	public void printMenuHeader() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("-*-*-*- Add Author -*-*-*-");	
 	}
 
 }

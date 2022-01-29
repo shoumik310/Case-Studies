@@ -12,8 +12,7 @@ public class AddBookMenu implements Menu {
 
 	@Override
 	public void printMenuHeader() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("-*-*-*- Add Book -*-*-*-");
 	}
 
 }

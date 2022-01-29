@@ -7,7 +7,7 @@ import com.libraryApp.entities.Transaction;
 public interface TransactionManagementService {
 	void addTransaction(Transaction transaction);
 	
-	String updateReturnDate(Transaction transaction);
+	int updateReturnDate(int BookId);
 	
 	List<Transaction> getTransactionByUserID(int userId);
 	

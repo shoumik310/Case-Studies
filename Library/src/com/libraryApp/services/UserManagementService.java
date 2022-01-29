@@ -13,8 +13,12 @@ public interface UserManagementService {
 	// TODO: implement authUser
 //	Boolean authUser();
 	
+	List<String> getMembershipDetails();
+	
 	List<User> getUserWithFine();
 	
 	List<User> getUsers(UserType userType);
+	
+	void PayFine();
 
 }

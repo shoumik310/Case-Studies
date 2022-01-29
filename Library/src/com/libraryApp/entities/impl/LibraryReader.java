@@ -105,4 +105,11 @@ public class LibraryReader implements User {
 	public void setMembershipType(String membershipType) {
 		this.membershipType = membershipType;
 	}
+
+	@Override
+	public String toString() {
+		return "User id: " + id + "\t Name: " + firstName + " " + lastName + "\t Email: " + email + "\t Fine: " + fine
+				+ "\t Borrowed: " + numberBorrowed + "\t Limit: " + borrowLimit + "\t Membership:" + membershipType;
+	}
+
 }
