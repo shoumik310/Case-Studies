@@ -2,15 +2,17 @@ package com.libraryApp.menu.impl;
 
 import java.util.Scanner;
 
-import com.libraryApp.Main;
 import com.libraryApp.menu.Menu;
+import com.libraryApp.menu.MenuInput;
 import com.libraryApp.session.SessionContext;
 
 public class MainMenu implements Menu {
+	
+	public static final String MENU_COMMAND = "menu";
 
-	private static final String MAIN_MENU_TEXT = System.lineSeparator()+"Welcome to the XYZ Library" + System.lineSeparator()
-			+ "Please enter number in console to proceed:" + System.lineSeparator() + "1. Sign In"
-			+ System.lineSeparator() + "2. Sign Up";
+	private static final String MAIN_MENU_TEXT = System.lineSeparator() + "Welcome to the XYZ Library"
+			+ System.lineSeparator() + "Please enter number in console to proceed:" + System.lineSeparator()
+			+ "1. Sign In" + System.lineSeparator() + "2. Sign Up";
 
 	private SessionContext context;
 
@@ -21,6 +23,10 @@ public class MainMenu implements Menu {
 	@Override
 	public void init() {
 
+		if (context.getMainMenu() == null) {
+			context.setMainMenu(this);
+		}
+
 		if (context.getDefaultMenu() == null) {
 			context.setDefaultMenu(this);
 		}
@@ -30,32 +36,19 @@ public class MainMenu implements Menu {
 		mainLoop: while (true) {
 			printMenuHeader();
 
-			System.out.print("User Input: ");
-			String userInput = sc.next();
-
-			if (userInput.equalsIgnoreCase(Main.EXIT_TEXT)) {
-				sc.close();
-				System.exit(0);
-			} else {
-				int commandNumber;
-				try {
-					commandNumber = Integer.parseInt(userInput);
-				} catch (NumberFormatException e) {
-					System.out.println("That is an invalid input! Please try again.");
-					continue;
-				}
-				switch (commandNumber) {
-				case 1:
-					nextMenu = new SignInMenu();
-					break mainLoop;
-				case 2:
-					nextMenu = new SignUpMenu();
-					break mainLoop;
-				default:
-					System.out.println("That is an invalid input! Please try again.");
-					continue;
-				}
+			int commandNumber = MenuInput.getMenuInput(sc);
+			switch (commandNumber) {
+			case 1:
+				nextMenu = new SignInMenu();
+				break mainLoop;
+			case 2:
+				nextMenu = new SignUpMenu();
+				break mainLoop;
+			default:
+				System.out.println(MenuInput.INVALID_INPUT_TEXT);
+				continue;
 			}
+
 		}
 		nextMenu.init();
 	}

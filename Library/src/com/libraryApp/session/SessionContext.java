@@ -7,6 +7,7 @@ public class SessionContext {
 	private static SessionContext instance;
 	
 	private Menu defaultMenu;
+	private Menu mainMenu;
 	private User loggedInUser;
 	
 	private SessionContext() {}
@@ -16,6 +17,14 @@ public class SessionContext {
 			instance = new SessionContext();
 		}
 		return instance;
+	}
+	
+	public Menu getMainMenu() {
+		return mainMenu;
+	}
+
+	public void setMainMenu(Menu mainMenu) {
+		this.mainMenu = mainMenu;
 	}
 
 	public Menu getDefaultMenu() {

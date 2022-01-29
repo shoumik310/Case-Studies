@@ -1,5 +1,15 @@
 package com.libraryApp.entities;
 
-public interface Transaction {
+import java.util.Date;
 
+public interface Transaction {
+	Date getDueDate();
+
+	int getBookId();
+
+	int getUserId();
+
+	int getId();
+
+	void setReturnDate(Date returnDate);
 }
