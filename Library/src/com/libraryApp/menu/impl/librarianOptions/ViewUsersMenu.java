@@ -3,7 +3,6 @@ package com.libraryApp.menu.impl.librarianOptions;
 import java.util.List;
 import java.util.Scanner;
 
-import com.libraryApp.constants.UserType;
 import com.libraryApp.entities.User;
 import com.libraryApp.menu.Menu;
 import com.libraryApp.menu.impl.MainMenu;
@@ -42,8 +41,8 @@ public class ViewUsersMenu implements Menu {
 	}
 
 	private void printAllUsers() {
-		List<User> readers = userManagementService.getUsers(UserType.READER);
-		List<User> librarians = userManagementService.getUsers(UserType.LIBRARIAN);
+		List<User> readers = userManagementService.getUsers("reader");
+		List<User> librarians = userManagementService.getUsers("librarian");
 		System.out.println(System.lineSeparator()+"-*-*-*- Readers -*-*-*-");
 		readers.forEach(System.out::println);
 		System.out.println(System.lineSeparator()+"-*-*-*- Librarians -*-*-*-");

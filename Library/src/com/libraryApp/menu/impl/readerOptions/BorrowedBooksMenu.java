@@ -9,6 +9,8 @@ import com.libraryApp.menu.MenuInput;
 import com.libraryApp.menu.impl.MainMenu;
 import com.libraryApp.services.BookManagementService;
 import com.libraryApp.services.TransactionManagementService;
+import com.libraryApp.services.impl.MySQLBookManagementService;
+import com.libraryApp.services.impl.MySQLTransactionManagementService;
 import com.libraryApp.session.SessionContext;
 
 public class BorrowedBooksMenu implements Menu {
@@ -18,6 +20,8 @@ public class BorrowedBooksMenu implements Menu {
 	private TransactionManagementService transactionManagementService;
 
 	{
+		transactionManagementService = MySQLTransactionManagementService.getInstance();
+		bookManagementService = MySQLBookManagementService.getInstance();
 		context = SessionContext.getInstance();
 	}
 

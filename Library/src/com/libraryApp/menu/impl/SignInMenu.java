@@ -3,8 +3,10 @@ package com.libraryApp.menu.impl;
 import java.util.Scanner;
 
 import com.libraryApp.entities.User;
+import com.libraryApp.entities.impl.LibraryLibrarian;
 import com.libraryApp.menu.Menu;
 import com.libraryApp.services.UserManagementService;
+import com.libraryApp.services.impl.MySQLUserManagementService;
 import com.libraryApp.session.SessionContext;
 
 public class SignInMenu implements Menu {
@@ -13,6 +15,7 @@ public class SignInMenu implements Menu {
 	private UserManagementService userManagementService;
 
 	{
+		userManagementService = MySQLUserManagementService.getInstance();
 		context = SessionContext.getInstance();
 	}
 
@@ -31,6 +34,11 @@ public class SignInMenu implements Menu {
 			System.out.printf("Glad to see you back %s %s", user.getFirstName(),
 					user.getLastName() + System.lineSeparator());
 			context.setLoggedInUser(user);
+			if(user instanceof LibraryLibrarian) {
+				context.setDefaultMenu(new LibrarianMenu());
+			}else {
+				context.setDefaultMenu(new ReaderMenu());
+			}
 		} else {
 			System.out.println("Unfortunately, such login and password doesn’t exist");
 		}

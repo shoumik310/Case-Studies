@@ -1,25 +1,28 @@
 package com.libraryApp.entities.impl;
 
-import com.libraryApp.entities.Author;
+import java.math.BigDecimal;
+
 import com.libraryApp.entities.Book;
 
 public class LibraryBook implements Book {
 	private int id;
 	private String title;
-	private double price;
+	private BigDecimal price;
 	private int totalQuantity;
 	private int availableQuantity;
 	private Author author;
 
-	public LibraryBook(String title, double price, int totalQuantity) {
+	public LibraryBook() {
+	}
+
+	public LibraryBook(String title, BigDecimal price, int totalQuantity, Author author) {
 		super();
 		this.title = title;
 		this.price = price;
 		this.totalQuantity = totalQuantity;
 	}
 
-	public LibraryBook(int id, String title, double price, int totalQuantity, int availableQuantity) {
-		super();
+	public LibraryBook(int id, String title, Author author, BigDecimal price, int totalQuantity, int availableQuantity) {
 		this.id = id;
 		this.title = title;
 		this.price = price;
@@ -43,11 +46,11 @@ public class LibraryBook implements Book {
 		this.title = title;
 	}
 
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

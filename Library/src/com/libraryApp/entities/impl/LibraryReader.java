@@ -10,11 +10,10 @@ public class LibraryReader implements User {
 	private int id;
 	private int fine;
 	private int numberBorrowed;
-	private int borrowLimit;
-	private String membershipType;
+	private Membership membership;
 
 	public LibraryReader(int id, String first_name, String last_name, String email, String password, int fine,
-			int numberBorrowed, String membershipType, int borrowLimit) {
+			int numberBorrowed, Membership membership) {
 		this.firstName = first_name;
 		this.lastName = last_name;
 		this.email = email;
@@ -22,16 +21,15 @@ public class LibraryReader implements User {
 		this.id = id;
 		this.fine = fine;
 		this.numberBorrowed = numberBorrowed;
-		this.borrowLimit = borrowLimit;
-		this.membershipType = membershipType;
+		this.setMembership(membership);
 	}
 
-	public LibraryReader(String first_name, String last_name, String email, String password, String membershipType) {
+	public LibraryReader(String first_name, String last_name, String email, String password, Membership membership) {
 		this.firstName = first_name;
 		this.lastName = last_name;
 		this.email = email;
 		this.password = password;
-		this.membershipType = membershipType;
+		this.membership = membership;
 	}
 
 	public String getFirstName() {
@@ -91,25 +89,22 @@ public class LibraryReader implements User {
 	}
 
 	public int getBorrowLimit() {
-		return borrowLimit;
+		return membership.getBorrowLimit();
 	}
 
-	public void setBorrowLimit(int borrowLimit) {
-		this.borrowLimit = borrowLimit;
+	public Membership getMembership() {
+		return membership;
 	}
 
-	public String getMembershipType() {
-		return membershipType;
-	}
-
-	public void setMembershipType(String membershipType) {
-		this.membershipType = membershipType;
+	public void setMembership(Membership membership) {
+		this.membership = membership;
 	}
 
 	@Override
 	public String toString() {
 		return "User id: " + id + "\t Name: " + firstName + " " + lastName + "\t Email: " + email + "\t Fine: " + fine
-				+ "\t Borrowed: " + numberBorrowed + "\t Limit: " + borrowLimit + "\t Membership:" + membershipType;
+				+ "\t Borrowed: " + numberBorrowed + "\t Limit: " + membership.getBorrowLimit() + "\t Membership:"
+				+ membership.getName();
 	}
 
 }

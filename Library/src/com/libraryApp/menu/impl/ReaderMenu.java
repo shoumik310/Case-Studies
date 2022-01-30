@@ -56,10 +56,10 @@ public class ReaderMenu implements Menu {
 	}
 
 	public void getUserInfo() {
-		userInfo = System.lineSeparator() + "Membership Type: " + context.getLoggedInUser().getMembershipType()
+		userInfo = System.lineSeparator() + "Membership Type: " + context.getLoggedInUser().getMembership().getName()
 				+ System.lineSeparator() + "Number of Books Borrowed: " + context.getLoggedInUser().getNumberBorrowed()
 				+ System.lineSeparator() + "Book Limit: " + context.getLoggedInUser().getBorrowLimit()
-				+ System.lineSeparator() + "Fine Due" + context.getLoggedInUser().getFine();
+				+ System.lineSeparator() + "Fine Due: " + context.getLoggedInUser().getFine();
 	}
 
 	@Override

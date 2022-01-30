@@ -72,7 +72,7 @@ public class LibraryLibrarian implements User {
 	}
 
 	@Override
-	public void setMembershipType(String membershipType) {
+	public void setMembership(Membership membership) {
 		throw new InvalidUserTypeException("Membership Type is not applicable for Librarian");
 
 	}
@@ -83,18 +83,18 @@ public class LibraryLibrarian implements User {
 	}
 
 	@Override
-	public String getMembershipType() {
+	public Membership getMembership() {
 		throw new InvalidUserTypeException("Membership Type is not applicable for Librarian");
 	}
 
 	@Override
 	public int getNumberBorrowed() {
-		throw new InvalidUserTypeException("Number borrowed is not applicable for Librarian");
+		throw new InvalidUserTypeException("Number borrowed  is not applicable for Librarian");
 	}
 
 	@Override
 	public int getBorrowLimit() {
-		throw new InvalidUserTypeException("Borrow limit is not applicable for Librarian");
+		throw new InvalidUserTypeException("Borrow Limit  is not applicable for Librarian");
 	}
 
 	@Override

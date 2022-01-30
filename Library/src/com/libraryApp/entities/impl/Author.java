@@ -1,18 +1,18 @@
 package com.libraryApp.entities.impl;
 
-public class BookAuthor {
+public class Author {
 	private int id;
 	private String firstName;
 	private String lastName;
 	
-	public BookAuthor(int id, String firstName, String lastName) {
+	public Author(int id, String firstName, String lastName) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
 
-	public BookAuthor(String firstName, String lastName) {
+	public Author(String firstName, String lastName) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;

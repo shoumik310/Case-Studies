@@ -1,12 +1,15 @@
 package com.libraryApp.menu.impl.librarianOptions;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+import com.libraryApp.entities.impl.Author;
 import com.libraryApp.menu.Menu;
 import com.libraryApp.menu.MenuInput;
 import com.libraryApp.menu.impl.MainMenu;
-import com.libraryApp.services.BookManagementService;
+import com.libraryApp.services.AuthorManagementService;
+import com.libraryApp.services.impl.MySQLAuthorManagingService;
 import com.libraryApp.session.SessionContext;
 
 public class ViewAuthorsMenu implements Menu {
@@ -15,9 +18,10 @@ public class ViewAuthorsMenu implements Menu {
 			+ System.lineSeparator() + "3. Delete Author";
 
 	private SessionContext context;
-	private BookManagementService bookManagementService;
+	private AuthorManagementService authorManagementService;
 
 	{
+		authorManagementService = MySQLAuthorManagingService.getInstance();
 		context = SessionContext.getInstance();
 	}
 
@@ -69,8 +73,13 @@ public class ViewAuthorsMenu implements Menu {
 	}
 
 	private void printAllAuthors() {
-		List<String> authors = bookManagementService.getAuthors();
-		authors.forEach(System.out::println);
+		List<Author> authors = null;
+		try {
+			authors = authorManagementService.getAuthors();
+			authors.forEach(System.out::println);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

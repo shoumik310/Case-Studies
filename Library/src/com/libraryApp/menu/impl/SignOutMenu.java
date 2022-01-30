@@ -22,7 +22,7 @@ public class SignOutMenu implements Menu{
 
 	@Override
 	public void printMenuHeader() {
-		System.out.println("\033[H\033[2J -*-*-*- Sign Out -*-*-*-");
+		System.out.println(System.lineSeparator()+"-*-*-*- Sign Out -*-*-*-");
 		System.out.println("Have a nice day! Look forward to welcoming back!");
 	}
 

@@ -1,36 +1,32 @@
 package com.libraryApp.menu.impl;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
-import com.libraryApp.constants.UserType;
 import com.libraryApp.entities.User;
 import com.libraryApp.entities.impl.LibraryLibrarian;
 import com.libraryApp.entities.impl.LibraryReader;
+import com.libraryApp.entities.impl.Membership;
 import com.libraryApp.menu.Menu;
 import com.libraryApp.menu.MenuInput;
 import com.libraryApp.services.UserManagementService;
+import com.libraryApp.services.impl.MembershipLoadingService;
+import com.libraryApp.services.impl.MySQLUserManagementService;
 import com.libraryApp.session.SessionContext;
 
 public class SignUpMenu implements Menu {
 
-	private final String MEMBERSHIP_TYPE_MESSAGE = "Please select desired membership type: " + System.lineSeparator()
-			+ "1. Bronze Tier -> Monthly -> 3 book limit" + System.lineSeparator()
-			+ "2. Silver Tier -> Semi-Anually -> 5 book limit" + System.lineSeparator()
-			+ "3. Gold Tier -> Anually -> 7 book limit" + System.lineSeparator()
-			+ "4. Diamond Tier -> Lifetime -> 4 book limit" + System.lineSeparator();
+	private final String MEMBERSHIP_MESSAGE;
 
-	// TODO:Improve membership
-	private String[] arr = new String[] { "Bronze", "Silver", "Gold", "Platinum" };
-	private List<String> membershipTiers = new ArrayList<>(Arrays.asList(arr));
+	private List<Membership> membershipTiers = MembershipLoadingService.getMemberships();
 
 	private SessionContext context;
 	private UserManagementService userManagementService;
 
 	{
+		userManagementService = MySQLUserManagementService.getInstance();
 		context = SessionContext.getInstance();
+		MEMBERSHIP_MESSAGE = voidGenerateMembershipString();
 	}
 
 	@Override
@@ -45,28 +41,28 @@ public class SignUpMenu implements Menu {
 		String email = sc.next();
 		System.out.print("Please enter your Password: ");
 		String password = sc.next();
-		UserType userType;
-		String membershipType;
+		String userType;
+		Membership membership;
 		loop: while (true) {
 			int typeInput = MenuInput.getIntInput(sc, "Please select desired user type: " + System.lineSeparator()
 					+ "1. Reader" + System.lineSeparator() + "2. Librarian");
-
 			switch (typeInput) {
 			case 1:
-				userType = UserType.READER;
+				userType = "reader";
 				while (true) {
-					int memInput = MenuInput.getIntInput(sc, MEMBERSHIP_TYPE_MESSAGE);
+					int memInput = MenuInput.getIntInput(sc, MEMBERSHIP_MESSAGE);
 					if (memInput <= 0 || memInput > membershipTiers.size()) {
 						System.out.println(MenuInput.INVALID_INPUT_TEXT);
 						continue;
 					} else {
-						membershipType = membershipTiers.get(typeInput);
+						membership = membershipTiers.get(typeInput-1);
 						break;
 					}
 				}
+				break loop;
 			case 2:
-				userType = UserType.LIBRARIAN;
-				membershipType = "N/A";
+				userType = "librarian";
+				membership = null;
 				break loop;
 			default:
 				System.out.println(MenuInput.INVALID_INPUT_TEXT);
@@ -74,19 +70,32 @@ public class SignUpMenu implements Menu {
 			}
 		}
 		User user;
-		if (userType == UserType.READER) {
-			user = new LibraryReader(firstName, lastName, email, password, membershipType);
+		if (userType.equalsIgnoreCase("reader")) {
+			user = new LibraryReader(firstName, lastName, email, password, membership);
 		} else {
 			user = new LibraryLibrarian(firstName, lastName, email, password);
 		}
 		String errorMessage = userManagementService.addUser(user, userType);
 		if (errorMessage == null || errorMessage.isEmpty()) {
 			context.setLoggedInUser(user);
+			if(user instanceof LibraryLibrarian) {
+				context.setDefaultMenu(new LibrarianMenu());
+			}else {
+				context.setDefaultMenu(new ReaderMenu());
+			}
 		} else {
 			System.out.println(errorMessage);
 		}
 		context.getDefaultMenu().init();
 
+	}
+
+	private String voidGenerateMembershipString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("Please select desired membership type: " + System.lineSeparator());
+		membershipTiers.stream().map(tier -> tier.toString())
+				.forEach(tier -> stringBuilder.append(tier + System.lineSeparator()));
+		return stringBuilder.toString();
 	}
 
 	@Override
