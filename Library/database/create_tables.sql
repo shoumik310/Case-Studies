@@ -17,7 +17,7 @@ CREATE TABLE `library`.`user`(
     `email` VARCHAR(50) NOT NULL,
     `password` VARCHAR(20) NOT NULL,
     `fine` INT DEFAULT 0,
-    `user_type` ENUM('LIBRARIAN', 'READER'),
+    `user_type` VARCHAR(10),
     `fk_user_membership` INT,
     `borrowed` INT,
     PRIMARY KEY (`id`),
