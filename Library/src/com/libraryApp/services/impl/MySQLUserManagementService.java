@@ -50,6 +50,22 @@ public class MySQLUserManagementService implements UserManagementService {
 			return "User Could Not Be Added";
 		}
 	}
+	
+	@Override
+	public User getUserById(int userId) {
+		String query = "SELECT * FROM user WHERE id = ? ;";
+		try (Connection con = MySQLDBUtil.getConnection(null);
+				PreparedStatement psSelect = con.prepareStatement(query);) {
+			psSelect.setInt(1, userId);
+			ResultSet rs = psSelect.executeQuery();
+			if(rs.next()) {
+				return loadUser(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Override
 	public User getUserByEmail(String userEmail) {
@@ -69,14 +85,26 @@ public class MySQLUserManagementService implements UserManagementService {
 
 	private User loadUser(ResultSet rs) throws SQLException {
 		List<Membership> tiers = MembershipLoadingService.getMemberships();
+		User user;
 		if (rs.getString("user_type").equalsIgnoreCase("reader")) {
-			return new LibraryReader(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"),
-					rs.getString("email"), rs.getString("password"), rs.getInt("fine"), rs.getInt("borrowed"),
-					tiers.get(rs.getInt("fk_user_membership")-1));
+			user = new LibraryReader();
+			user.setId(rs.getInt("id"));
+			user.setFirstName(rs.getString("first_name")); 
+			user.setLastName(rs.getString("last_name"));
+			user.setEmail(rs.getString("email")); 
+			user.setPassword(rs.getString("password"));
+			user.setFine(rs.getInt("fine"));
+			user.setBorrowed(rs.getInt("borrowed"));
+			user.setMembership(tiers.get(rs.getInt("fk_user_membership")-1));
 		} else {
-			return new LibraryLibrarian(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"),
-					rs.getString("email"), rs.getString("password"));
+			user =  new LibraryLibrarian();
+			user.setId(rs.getInt("id"));
+			user.setFirstName(rs.getString("first_name")); 
+			user.setLastName(rs.getString("last_name"));
+			user.setEmail(rs.getString("email")); 
+			user.setPassword(rs.getString("password"));
 		}
+		return user;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.libraryApp.menu.impl.librarianOptions;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,7 +8,7 @@ import com.libraryApp.menu.Menu;
 import com.libraryApp.menu.MenuInput;
 import com.libraryApp.menu.impl.MainMenu;
 import com.libraryApp.services.AuthorManagementService;
-import com.libraryApp.services.impl.MySQLAuthorManagingService;
+import com.libraryApp.services.impl.MySQLAuthorManagementService;
 import com.libraryApp.session.SessionContext;
 
 public class ViewAuthorsMenu implements Menu {
@@ -21,14 +20,14 @@ public class ViewAuthorsMenu implements Menu {
 	private AuthorManagementService authorManagementService;
 
 	{
-		authorManagementService = MySQLAuthorManagingService.getInstance();
+		authorManagementService = MySQLAuthorManagementService.getInstance();
 		context = SessionContext.getInstance();
 	}
 
 	@Override
 	public void init() {
 		Menu nextMenu;
-		while (true) {
+		loop:while (true) {
 			printMenuHeader();
 			printAllAuthors();
 			String userInput = getUserInput();
@@ -46,13 +45,13 @@ public class ViewAuthorsMenu implements Menu {
 				switch (commandNumber) {
 				case 1:
 					nextMenu = new AddAuthorMenu();
-					break;
+					break loop;
 				case 2:
 					nextMenu = new UpdateAuthorMenu();
-					break;
+					break loop;
 				case 3:
 					nextMenu = new RemoveAuthorMenu();
-					break;
+					break loop;
 				default:
 					System.out.println(MenuInput.INVALID_INPUT_TEXT);
 					continue;
@@ -63,23 +62,21 @@ public class ViewAuthorsMenu implements Menu {
 	}
 
 	private String getUserInput() {
-		try (Scanner sc = new Scanner(System.in)) {
-			System.out.println(OPTIONS);
-			System.out.printf(("Enter the number of operation in console, or '%s' to return to previous menu."
-					+ System.lineSeparator()), MainMenu.MENU_COMMAND);
-			String userInput = sc.next();
-			return userInput;
-		}
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
+		System.out.println(OPTIONS);
+		System.out.printf(("Enter the number of operation in console, or '%s' to return to previous menu."
+				+ System.lineSeparator()), MainMenu.MENU_COMMAND);
+		String userInput = sc.next();
+		return userInput;
 	}
 
 	private void printAllAuthors() {
 		List<Author> authors = null;
-		try {
-			authors = authorManagementService.getAuthors();
-			authors.forEach(System.out::println);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+
+		authors = authorManagementService.getAuthors();
+		authors.forEach(System.out::println);
+
 	}
 
 	@Override

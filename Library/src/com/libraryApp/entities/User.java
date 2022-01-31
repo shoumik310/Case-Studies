@@ -7,6 +7,14 @@ public interface User {
 	String getEmail();
 
 	String getPassword();
+	
+	void setFirstName(String firstName);
+	
+	void setLastName(String lastName);
+	
+	void setId(int id);
+	
+	void setBorrowed(int borrowed);
 
 	void setEmail(String email);
 
@@ -15,14 +23,12 @@ public interface User {
 	void setFine(int fine) throws InvalidUserTypeException;
 
 	void setMembership(Membership membershipType) throws InvalidUserTypeException;
-
-	void setNumberBorrowed(int numberBorrowed) throws InvalidUserTypeException;
 	
 	int getId();
 
 	Membership getMembership() throws InvalidUserTypeException;
 
-	int getNumberBorrowed() throws InvalidUserTypeException;
+	int getBorrowed() throws InvalidUserTypeException;
 
 	int getBorrowLimit() throws InvalidUserTypeException;
 

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.libraryApp.entities.Book;
-import com.libraryApp.entities.Transaction;
-import com.libraryApp.entities.impl.LibraryTransaction;
 import com.libraryApp.menu.Menu;
 import com.libraryApp.menu.MenuInput;
 import com.libraryApp.menu.impl.MainMenu;
@@ -64,7 +62,7 @@ public class BookSelectionMenu implements Menu {
 	private String createTransaction(int bookId) {
 		if (context.getLoggedInUser().getFine() != 0) {
 			return "Please pay all Pending Fines before borrowing another book";
-		} else if (context.getLoggedInUser().getBorrowLimit() - context.getLoggedInUser().getNumberBorrowed() <= 0) {
+		} else if (context.getLoggedInUser().getBorrowLimit() - context.getLoggedInUser().getBorrowed() <= 0) {
 			return "You Have Exceeded your Limit! Please Return a book before borrowing another.";
 		}
 
@@ -72,20 +70,19 @@ public class BookSelectionMenu implements Menu {
 		if (books.stream().noneMatch(book -> book.getId() == bookId)) {
 			return "The requested book id Does Not Exist";
 		} else {
-			Transaction transaction = new LibraryTransaction(context.getLoggedInUser().getId(), bookId);
-			transactionManagementService.addTransaction(transaction);
+			transactionManagementService.addTransaction(context.getLoggedInUser().getId(), bookId);
 			return "";
 		}
 
 	}
 
 	private String getUserInput() {
-		try (Scanner sc = new Scanner(System.in)) {
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
 			System.out.printf(("Enter the book id in console to borrow, or '%s' to return to previous menu."
 					+ System.lineSeparator()), MainMenu.MENU_COMMAND);
 			String userInput = sc.next();
 			return userInput;
-		}
 	}
 
 	private void printAllBooks() {

@@ -1,17 +1,16 @@
 package com.libraryApp.services;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.libraryApp.entities.impl.Author;
 
 public interface AuthorManagementService {
 	
-	List<Author> getAuthors() throws SQLException;
+	List<Author> getAuthors();
 
-	void AddAuthor(String firstName, String lastName);
+	String AddAuthor(String firstName, String lastName);
 
-	void UpdateAuthor(Author author);
+	String UpdateAuthor(Author author);
 
-	void RemoveAuthor();
+	String RemoveAuthor(int Author);
 }

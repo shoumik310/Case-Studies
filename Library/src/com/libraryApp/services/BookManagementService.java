@@ -1,15 +1,18 @@
 package com.libraryApp.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.libraryApp.entities.Book;
 
 public interface BookManagementService {
-	void addBook(String title, int authorId);
+	String addBook(String title, int authorId, BigDecimal price, int totalQuantity);
 	
-	void UpdateBook(Book book);
+	String UpdateBook(Book book);
 
-	void RemoveBook(int bookId);
+	String RemoveBook(int bookId);
+	
+	Book getBookById(int bookId);
 
 	List<Book> getBookByAuthor(int authorId);
 

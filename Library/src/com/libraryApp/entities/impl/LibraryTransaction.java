@@ -18,6 +18,10 @@ public class LibraryTransaction implements Transaction {
 		this.bookId = bookId;
 	}
 	
+	public LibraryTransaction() {
+		this.returnDate=null;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -53,6 +57,12 @@ public class LibraryTransaction implements Transaction {
 	}
 	public void setReturnDate(Date returnDate) {
 		this.returnDate = returnDate;
+	}
+
+	@Override
+	public String toString() {
+		return "LibraryTransaction [id=" + id + ", userId=" + userId + ", bookId=" + bookId + ", issueDate=" + issueDate
+				+ ", dueDate=" + dueDate + ", returnDate=" + returnDate + "]";
 	}
 	
 	

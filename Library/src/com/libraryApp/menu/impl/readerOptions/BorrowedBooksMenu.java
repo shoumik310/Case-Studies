@@ -67,19 +67,23 @@ public class BorrowedBooksMenu implements Menu {
 		if (books.stream().noneMatch(book -> book.getId() == bookId)) {
 			return "You Have not Borrowed This book";
 		} else {
-			int fineAmount = transactionManagementService.updateReturnDate(bookId);
-			return "S " + fineAmount;
+			int fineAmount = transactionManagementService.updateReturnDate(context.getLoggedInUser().getId(), bookId);
+			if (fineAmount == -1) {
+				return "Operation Failed";
+			} else {
+				return "S " + fineAmount;
+			}
 		}
 
 	}
 
 	private String getUserInput() {
-		try (Scanner sc = new Scanner(System.in)) {
-			System.out.printf(("Enter the book id in console to return, or '%s' to return to previous menu."
-					+ System.lineSeparator()), MainMenu.MENU_COMMAND);
-			String userInput = sc.next();
-			return userInput;
-		}
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
+		System.out.printf(("Enter the book id in console to return, or '%s' to return to previous menu."
+				+ System.lineSeparator()), MainMenu.MENU_COMMAND);
+		String userInput = sc.next();
+		return userInput;
 	}
 
 	private void printAllBooks() {

@@ -70,6 +70,14 @@ public class LibraryBook implements Book {
 		this.availableQuantity = availableQuantity;
 	}
 
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+
 	@Override
 	public String toLimitedString() {
 		return "Book id: " + id + "\t Title: " + title + "\t Remaining: " + availableQuantity + "\t Author: "

@@ -22,6 +22,10 @@ public class PayFineMenu implements Menu {
 
 	@Override
 	public void init() {
+		printMenuHeader();
+		if(context.getLoggedInUser().getFine()==0) {
+			context.getDefaultMenu().init();
+		}
 		while (true) {
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);

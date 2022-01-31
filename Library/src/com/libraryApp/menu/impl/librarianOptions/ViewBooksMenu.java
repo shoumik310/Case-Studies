@@ -9,6 +9,7 @@ import com.libraryApp.menu.Menu;
 import com.libraryApp.menu.MenuInput;
 import com.libraryApp.menu.impl.MainMenu;
 import com.libraryApp.services.BookManagementService;
+import com.libraryApp.services.impl.MySQLBookManagementService;
 import com.libraryApp.session.SessionContext;
 
 public class ViewBooksMenu implements Menu {
@@ -20,13 +21,14 @@ public class ViewBooksMenu implements Menu {
 	private BookManagementService bookManagementService;
 	
 	{
+		bookManagementService = MySQLBookManagementService.getInstance();
 		context = SessionContext.getInstance();
 	}
 
 	@Override
 	public void init() {
 		Menu nextMenu;
-		while (true) {
+		loop:while (true) {
 			printMenuHeader();
 			printAllBooks();
 			String userInput = getUserInput();
@@ -44,13 +46,13 @@ public class ViewBooksMenu implements Menu {
 				switch (commandNumber) {
 				case 1:
 					nextMenu = new AddBookMenu();
-					break;
+					break loop;
 				case 2:
 					nextMenu = new UpdateBookMenu();
-					break;
+					break loop;
 				case 3:
 					nextMenu = new RemoveBookMenu();
-					break;
+					break loop;
 				default:
 					System.out.println(MenuInput.INVALID_INPUT_TEXT);
 					continue;
@@ -61,13 +63,13 @@ public class ViewBooksMenu implements Menu {
 	}
 
 	private String getUserInput() {
-		try (Scanner sc = new Scanner(System.in)) {
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
 			System.out.println(OPTIONS);
 			System.out.printf(("Enter the number of operation in console, or '%s' to return to previous menu."
 					+ System.lineSeparator()), MainMenu.MENU_COMMAND);
 			String userInput = sc.next();
 			return userInput;
-		}
 	}
 
 	private void printAllBooks() {

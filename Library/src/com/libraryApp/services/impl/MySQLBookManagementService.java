@@ -1,5 +1,6 @@
 package com.libraryApp.services.impl;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,9 +22,9 @@ public class MySQLBookManagementService implements BookManagementService {
 	private List<Author> authors;
 
 	{
-		authorManagementService = MySQLAuthorManagingService.getInstance();
+		authorManagementService = MySQLAuthorManagementService.getInstance();
 	}
-	
+
 	private MySQLBookManagementService() {
 	}
 
@@ -35,33 +36,43 @@ public class MySQLBookManagementService implements BookManagementService {
 	}
 
 	@Override
-	public void addBook(String title, int authorId) {
+	public String addBook(String title, int authorId, BigDecimal price, int totalQuantity) {
 
-		String query = "INSERT INTO book (title, author_id) VALUES (?,?)";
-		try {
-			authors = authorManagementService.getAuthors();
-		} catch (SQLException e1) {
-			throw new RuntimeException(e1);
-		}
+		String query = "INSERT INTO book (title, author_id, price, total_quantity) VALUES (?,?,?,?)";
 		try (Connection con = MySQLDBUtil.getConnection(null);
 				PreparedStatement psInsert = con.prepareStatement(query);) {
 			psInsert.setString(1, title);
 			psInsert.setInt(2, authorId);
+			psInsert.setBigDecimal(3, price);
+			psInsert.setInt(4, totalQuantity);
 			psInsert.executeUpdate();
+			return "";
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			return (e.getMessage());
 		}
 
 	}
 
+
+	public Book getBookById(int bookId) {
+		String query = "SELECT * FROM book WHERE id = ? ;";
+		try (Connection con = MySQLDBUtil.getConnection(null);
+				PreparedStatement psSelect = con.prepareStatement(query);) {
+			psSelect.setInt(1, bookId);
+			ResultSet rs = psSelect.executeQuery();
+			if (rs.next()) {
+				return loadBook(rs);
+			}
+			return null;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	@Override
 	public List<Book> getBookByAuthor(int authorId) {
 		List<Book> books = new ArrayList<Book>();
-		try {
-			authors = authorManagementService.getAuthors();
-		} catch (SQLException e1) {
-			throw new RuntimeException(e1);
-		}
+		authors = authorManagementService.getAuthors();
 		String query = "SELECT * FROM book WHERE author_id = ? ;";
 		try (Connection con = MySQLDBUtil.getConnection(null);
 				PreparedStatement psSelect = con.prepareStatement(query);) {
@@ -96,16 +107,14 @@ public class MySQLBookManagementService implements BookManagementService {
 		}
 	}
 
+	// TODO: Debug Unknown column 'available_quantity' in 'field list'
 	@Override
 	public List<Book> getBorrowedBooks(int userId) {
-		String query = "SELECT b.id,b.title,b.author_id,b.price,b.total_quantity " + "from book b join `transaction` t "
+		String query = "SELECT * from book b join `transaction` t "
 				+ "ON b.id = t.book_id " + "WHERE t.user_id = ? ;";
 		List<Book> books = new ArrayList<Book>();
-		try {
-			authors = authorManagementService.getAuthors();
-		} catch (SQLException e1) {
-			throw new RuntimeException(e1);
-		}
+		authors = authorManagementService.getAuthors();
+
 		try (Connection con = MySQLDBUtil.getConnection(null);
 				PreparedStatement psSelect = con.prepareStatement(query);) {
 			psSelect.setInt(1, userId);
@@ -119,7 +128,7 @@ public class MySQLBookManagementService implements BookManagementService {
 		}
 	}
 
-	List<Book> loadBooks(String query) throws SQLException {
+	private List<Book> loadBooks(String query) throws SQLException {
 		List<Book> books = new ArrayList<Book>();
 		authors = authorManagementService.getAuthors();
 		try (Connection con = MySQLDBUtil.getConnection(null);
@@ -133,13 +142,18 @@ public class MySQLBookManagementService implements BookManagementService {
 	}
 
 	private Book loadBook(ResultSet rs) throws SQLException {
-		return new LibraryBook(rs.getInt("id"), rs.getString("title"), authors.get(rs.getInt("author_id")),
-				rs.getBigDecimal("price"), rs.getInt("total_quantity"), rs.getInt("available_quantity"));
-
+		Book book = new LibraryBook();
+		book.setId(rs.getInt("id"));
+		book.setTitle(rs.getString("title"));
+		book.setAuthor(authors.get(rs.getInt("author_id") - 1));
+		book.setPrice(rs.getBigDecimal("price"));
+		book.setTotalQuantity(rs.getInt("total_quantity"));
+		book.setAvailableQuantity(rs.getInt("available_quantity"));
+		return book;
 	}
 
 	@Override
-	public void UpdateBook(Book book) {
+	public String UpdateBook(Book book) {
 		String query = "UPDATE book SET title = ?, price = ?, total_quantity = ?, available_quantity = ? WHERE id = ? ";
 		try (Connection con = MySQLDBUtil.getConnection(null);
 				PreparedStatement psUpdate = con.prepareStatement(query);) {
@@ -149,20 +163,22 @@ public class MySQLBookManagementService implements BookManagementService {
 			psUpdate.setInt(4, book.getAvailableQuantity());
 			psUpdate.setInt(5, book.getId());
 			psUpdate.executeUpdate();
+			return "";
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			return (e.getMessage());
 		}
 	}
 
 	@Override
-	public void RemoveBook(int bookId) {
+	public String RemoveBook(int bookId) {
 		String query = "DELETE FROM book WHERE id = ? ";
 		try (Connection con = MySQLDBUtil.getConnection(null);
 				PreparedStatement psDelete = con.prepareStatement(query);) {
 			psDelete.setInt(1, bookId);
 			psDelete.executeUpdate();
+			return "";
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			return (e.getMessage());
 		}
 	}
 

@@ -2,9 +2,15 @@ package com.libraryApp.entities;
 
 import java.math.BigDecimal;
 
+import com.libraryApp.entities.impl.Author;
+
 public interface Book {
 
 	public int getId();
+	
+	void setId(int id);
+	
+	void setAuthor(Author author);
 	
 	public void setTitle(String title);
 
@@ -13,6 +19,8 @@ public interface Book {
 	public void setTotalQuantity(int totalQuantity);
 	
 	String getTitle();
+	
+	Author getAuthor();
 	
 	int getTotalQuantity();
 	

@@ -10,6 +10,8 @@ public interface UserManagementService {
 	
 	User getUserByEmail(String userEmail);
 	
+	User getUserById(int userId);
+	
 	// TODO: implement authUser
 //	Boolean authUser();
 	

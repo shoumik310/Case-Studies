@@ -27,7 +27,15 @@ public class Author {
 	}
 
 	public String getName() {
-		return firstName+lastName;
+		return firstName+" "+lastName;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
 	}
 
 	public void setFirstName(String firstName) {

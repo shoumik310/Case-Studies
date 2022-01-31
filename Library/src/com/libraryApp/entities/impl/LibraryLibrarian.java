@@ -26,6 +26,9 @@ public class LibraryLibrarian implements User {
 		this.password = password;
 	}
 
+	public LibraryLibrarian() {
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -78,7 +81,7 @@ public class LibraryLibrarian implements User {
 	}
 
 	@Override
-	public void setNumberBorrowed(int numberBorrowed) {
+	public void setBorrowed(int borrowed) {
 		throw new InvalidUserTypeException("Number borrowed  is not applicable for Librarian");
 	}
 
@@ -88,7 +91,7 @@ public class LibraryLibrarian implements User {
 	}
 
 	@Override
-	public int getNumberBorrowed() {
+	public int getBorrowed() {
 		throw new InvalidUserTypeException("Number borrowed  is not applicable for Librarian");
 	}
 

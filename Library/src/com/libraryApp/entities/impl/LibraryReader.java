@@ -9,18 +9,21 @@ public class LibraryReader implements User {
 	private String password;
 	private int id;
 	private int fine;
-	private int numberBorrowed;
+	private int borrowed;
 	private Membership membership;
+	
+	public LibraryReader() {
+	}
 
 	public LibraryReader(int id, String first_name, String last_name, String email, String password, int fine,
-			int numberBorrowed, Membership membership) {
+			int borrowed, Membership membership) {
 		this.firstName = first_name;
 		this.lastName = last_name;
 		this.email = email;
 		this.password = password;
 		this.id = id;
 		this.fine = fine;
-		this.numberBorrowed = numberBorrowed;
+		this.borrowed = borrowed;
 		this.setMembership(membership);
 	}
 
@@ -80,12 +83,12 @@ public class LibraryReader implements User {
 		this.fine = fine;
 	}
 
-	public int getNumberBorrowed() {
-		return numberBorrowed;
+	public int getBorrowed() {
+		return borrowed;
 	}
 
-	public void setNumberBorrowed(int numberBorrowed) {
-		this.numberBorrowed = numberBorrowed;
+	public void setBorrowed(int borrowed) {
+		this.borrowed = borrowed;
 	}
 
 	public int getBorrowLimit() {
@@ -103,7 +106,7 @@ public class LibraryReader implements User {
 	@Override
 	public String toString() {
 		return "User id: " + id + "\t Name: " + firstName + " " + lastName + "\t Email: " + email + "\t Fine: " + fine
-				+ "\t Borrowed: " + numberBorrowed + "\t Limit: " + membership.getBorrowLimit() + "\t Membership:"
+				+ "\t Borrowed: " + borrowed + "\t Limit: " + membership.getBorrowLimit() + "\t Membership:"
 				+ membership.getName();
 	}
 

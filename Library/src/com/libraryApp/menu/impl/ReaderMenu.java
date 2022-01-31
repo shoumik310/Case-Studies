@@ -15,7 +15,6 @@ public class ReaderMenu implements Menu {
 
 	{
 		context = SessionContext.getInstance();
-		getUserInfo();
 	}
 
 	private static String userInfo;
@@ -57,14 +56,17 @@ public class ReaderMenu implements Menu {
 
 	public void getUserInfo() {
 		userInfo = System.lineSeparator() + "Membership Type: " + context.getLoggedInUser().getMembership().getName()
-				+ System.lineSeparator() + "Number of Books Borrowed: " + context.getLoggedInUser().getNumberBorrowed()
+				+ System.lineSeparator() + "Number of Books Borrowed: " + context.getLoggedInUser().getBorrowed()
 				+ System.lineSeparator() + "Book Limit: " + context.getLoggedInUser().getBorrowLimit()
 				+ System.lineSeparator() + "Fine Due: " + context.getLoggedInUser().getFine();
 	}
 
 	@Override
 	public void printMenuHeader() {
+
+		getUserInfo();
 		System.out.println(userInfo);
+
 		System.out.println(READER_MENU_TEXT);
 	}
 
