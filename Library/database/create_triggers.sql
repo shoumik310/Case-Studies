@@ -1,17 +1,15 @@
 DELIMITER $$
 
-DROP TRIGGER `transaction`.transaction_date_setter;
-
 CREATE TRIGGER transaction_date_setter
 BEFORE INSERT
-ON library.`transaction`
+ON transaction
 FOR EACH ROW
 BEGIN
 	IF NEW.issue_date IS NULL THEN
-		SET NEW.issue_date = NOW();
+		SET NEW.issue_date = CURRENT_DATE;
 	END IF;
     IF NEW.due_date IS NULL THEN
-		SET NEW.due_date = NOW() + INTERVAL 14 DAY;
+		SET NEW.due_date = CURRENT_DATE+14;
 	END IF;
 END$$
 
@@ -22,14 +20,6 @@ FOR EACH ROW
 BEGIN
 	SET NEW.available_quantity = NEW.total_quantity;
 END$$
-
--- CREATE TRIGGER book_return
--- BEFORE UPDATE
--- ON transaction
--- FOR EACH ROW
--- BEGIN
--- 	
--- END$$
 
 DELIMITER ;
 
