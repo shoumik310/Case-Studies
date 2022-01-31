@@ -9,8 +9,10 @@ import com.libraryApp.menu.MenuInput;
 import com.libraryApp.menu.impl.MainMenu;
 import com.libraryApp.services.BookManagementService;
 import com.libraryApp.services.TransactionManagementService;
+import com.libraryApp.services.UserManagementService;
 import com.libraryApp.services.impl.MySQLBookManagementService;
 import com.libraryApp.services.impl.MySQLTransactionManagementService;
+import com.libraryApp.services.impl.MySQLUserManagementService;
 import com.libraryApp.session.SessionContext;
 
 public class BookSelectionMenu implements Menu {
@@ -18,8 +20,10 @@ public class BookSelectionMenu implements Menu {
 	private SessionContext context;
 	private BookManagementService bookManagementService;
 	private TransactionManagementService transactionManagementService;
+	private UserManagementService userManagementService;
 
 	{
+		userManagementService = MySQLUserManagementService.getInstance();
 		transactionManagementService = MySQLTransactionManagementService.getInstance();
 		bookManagementService = MySQLBookManagementService.getInstance();
 		context = SessionContext.getInstance();
@@ -34,6 +38,7 @@ public class BookSelectionMenu implements Menu {
 			if (userInput.equalsIgnoreCase(MainMenu.MENU_COMMAND)) {
 				break;
 			} else if (borrowBook(userInput)) {
+				context.setLoggedInUser(userManagementService.getUserById(context.getLoggedInUser().getId()));
 				break;
 			}
 		}

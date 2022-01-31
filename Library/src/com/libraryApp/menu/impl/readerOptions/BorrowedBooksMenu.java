@@ -9,8 +9,10 @@ import com.libraryApp.menu.MenuInput;
 import com.libraryApp.menu.impl.MainMenu;
 import com.libraryApp.services.BookManagementService;
 import com.libraryApp.services.TransactionManagementService;
+import com.libraryApp.services.UserManagementService;
 import com.libraryApp.services.impl.MySQLBookManagementService;
 import com.libraryApp.services.impl.MySQLTransactionManagementService;
+import com.libraryApp.services.impl.MySQLUserManagementService;
 import com.libraryApp.session.SessionContext;
 
 public class BorrowedBooksMenu implements Menu {
@@ -18,8 +20,10 @@ public class BorrowedBooksMenu implements Menu {
 	private SessionContext context;
 	private BookManagementService bookManagementService;
 	private TransactionManagementService transactionManagementService;
+	private UserManagementService userManagementService;
 
 	{
+		userManagementService = MySQLUserManagementService.getInstance();
 		transactionManagementService = MySQLTransactionManagementService.getInstance();
 		bookManagementService = MySQLBookManagementService.getInstance();
 		context = SessionContext.getInstance();
@@ -50,11 +54,10 @@ public class BorrowedBooksMenu implements Menu {
 			return false;
 		}
 		String result = updateReturnDate(bookId);
-		if (result.charAt(0) == 'S') {
-			System.out.printf(
-					"Successfully Returned Book, Your Fine is %d" + System.lineSeparator() + "Your Total Fine is  %d"
-							+ System.lineSeparator(),
-					Integer.parseInt(result.substring(2)), context.getLoggedInUser().getFine());
+		if (result.isEmpty() || result == null) {
+			context.setLoggedInUser(userManagementService.getUserById(context.getLoggedInUser().getId()));
+			System.out.printf("Successfully Returned Book, Your Total Fine is %d" + System.lineSeparator(),
+					context.getLoggedInUser().getFine());
 			return true;
 		} else {
 			System.out.println(result);
@@ -67,11 +70,11 @@ public class BorrowedBooksMenu implements Menu {
 		if (books.stream().noneMatch(book -> book.getId() == bookId)) {
 			return "You Have not Borrowed This book";
 		} else {
-			int fineAmount = transactionManagementService.updateReturnDate(context.getLoggedInUser().getId(), bookId);
-			if (fineAmount == -1) {
-				return "Operation Failed";
+			String error = transactionManagementService.updateReturnDate(context.getLoggedInUser().getId(), bookId);
+			if (error.isEmpty() || error == null) {
+				return "";
 			} else {
-				return "S " + fineAmount;
+				return error;
 			}
 		}
 

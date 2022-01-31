@@ -72,7 +72,7 @@ public class MySQLTransactionManagementService implements TransactionManagementS
 	}
 
 	@Override
-	public int updateReturnDate(int bookId, int userId) {
+	public String updateReturnDate(int userId, int bookId) {
 		String updateQuery1 = "UPDATE transaction SET return_date = NOW() WHERE user_id = ? AND book_id = ? ";
 		String updateQuery2 = "UPDATE user SET borrowed = ?, fine = ? WHERE id = ?;";
 		String updateQuery3 = "UPDATE book SET available_quantity = ? WHERE id = ?;";
@@ -96,7 +96,6 @@ public class MySQLTransactionManagementService implements TransactionManagementS
 			psUpdateU.setInt(1, user.getBorrowed()-1);
 			psUpdateU.setInt(2, fine);
 			psUpdateU.setInt(3, userId);
-			System.out.println(psUpdateU);
 			psUpdateU.executeUpdate();
 			
 			Book book = bookManagementService.getBookById(bookId);
@@ -106,11 +105,10 @@ public class MySQLTransactionManagementService implements TransactionManagementS
 			
 			con.commit();
 			
-			return fine;
+			return "";
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 //			con.rollback();
-			return -1;
+			return e.getMessage();
 		}
 	}
 
@@ -121,6 +119,7 @@ public class MySQLTransactionManagementService implements TransactionManagementS
 				PreparedStatement psSelect = con.prepareStatement(query);) {
 			psSelect.setInt(1, userId);
 			psSelect.setInt(2, bookId);			
+			
 			ResultSet rs = psSelect.executeQuery();
 			if (rs.next()) {
 				return loadTransaction(rs);

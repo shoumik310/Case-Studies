@@ -27,7 +27,7 @@ public class MySQLUserManagementService implements UserManagementService {
 		}
 		return instance;
 	}
-
+	
 	@Override
 	public String addUser(User user, String userType) {
 		String query = "INSERT INTO user (first_name, last_name, email, password, user_type, fk_user_membership ) VALUES (?,?,?,?,?,?)";

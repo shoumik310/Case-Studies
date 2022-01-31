@@ -5,5 +5,5 @@ public interface TransactionManagementService {
 	
 	String addTransaction(int userId, int bookId);
 	
-	int updateReturnDate(int bookId, int userId);
+	String updateReturnDate(int bookId, int userId);
 }
