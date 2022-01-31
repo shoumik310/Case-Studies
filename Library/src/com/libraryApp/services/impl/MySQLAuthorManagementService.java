@@ -56,10 +56,9 @@ public class MySQLAuthorManagementService implements AuthorManagementService {
 
 	}
 
-	//TODO: Debug Unknown column 'first_name' in 'field list'
 	@Override
 	public String UpdateAuthor(Author author) {
-		String query = "UPDATE book SET first_name = ?, last_name = ? WHERE id = ? ";
+		String query = "UPDATE author SET first_name = ?, last_name = ? WHERE id = ? ";
 		try (Connection con = MySQLDBUtil.getConnection(null);
 				PreparedStatement psUpdate = con.prepareStatement(query);) {
 			psUpdate.setString(1, author.getFirstName());

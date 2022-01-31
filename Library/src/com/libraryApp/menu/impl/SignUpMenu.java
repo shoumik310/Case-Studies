@@ -55,7 +55,7 @@ public class SignUpMenu implements Menu {
 						System.out.println(MenuInput.INVALID_INPUT_TEXT);
 						continue;
 					} else {
-						membership = membershipTiers.get(typeInput-1);
+						membership = membershipTiers.get(memInput-1);
 						break;
 					}
 				}

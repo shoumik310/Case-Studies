@@ -111,7 +111,7 @@ public class MySQLBookManagementService implements BookManagementService {
 	@Override
 	public List<Book> getBorrowedBooks(int userId) {
 		String query = "SELECT * from book b join `transaction` t "
-				+ "ON b.id = t.book_id " + "WHERE t.user_id = ? ;";
+				+ "ON b.id = t.book_id " + "WHERE t.user_id = ? AND t.return_date IS NULL;";
 		List<Book> books = new ArrayList<Book>();
 		authors = authorManagementService.getAuthors();
 

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import com.libraryApp.entities.Book;
 import com.libraryApp.entities.Transaction;
@@ -73,7 +74,7 @@ public class MySQLTransactionManagementService implements TransactionManagementS
 	@Override
 	public int updateReturnDate(int bookId, int userId) {
 		String updateQuery1 = "UPDATE transaction SET return_date = NOW() WHERE user_id = ? AND book_id = ? ";
-		String updateQuery2 = "UPDATE user SET borrowed = ?, SET fine = ? WHERE id = ?;";
+		String updateQuery2 = "UPDATE user SET borrowed = ?, fine = ? WHERE id = ?;";
 		String updateQuery3 = "UPDATE book SET available_quantity = ? WHERE id = ?;";
 		try (Connection con = MySQLDBUtil.getConnection(null);
 				PreparedStatement psUpdateT = con.prepareStatement(updateQuery1);
@@ -87,9 +88,7 @@ public class MySQLTransactionManagementService implements TransactionManagementS
 			psUpdateT.executeUpdate();
 			
 			Transaction transaction = getTransaction(userId, bookId);
-			System.out.println(transaction);
-			System.out.println(transaction.getReturnDate());
-			long timeInSeconds = transaction.getReturnDate().getTime()-transaction.getDueDate().getTime();
+			long timeInSeconds = new Date().getTime()-transaction.getDueDate().getTime();
 			int differenceInDays = (int)((timeInSeconds/ (1000 * 60 * 60 * 24))% 365);
 			int fine = differenceInDays*DAILY_FINE_AMOUNT>=0?differenceInDays*DAILY_FINE_AMOUNT:0;
 			
@@ -97,6 +96,7 @@ public class MySQLTransactionManagementService implements TransactionManagementS
 			psUpdateU.setInt(1, user.getBorrowed()-1);
 			psUpdateU.setInt(2, fine);
 			psUpdateU.setInt(3, userId);
+			System.out.println(psUpdateU);
 			psUpdateU.executeUpdate();
 			
 			Book book = bookManagementService.getBookById(bookId);
@@ -115,12 +115,13 @@ public class MySQLTransactionManagementService implements TransactionManagementS
 	}
 
 	private Transaction getTransaction(int userId, int bookId) {
-		String query = "SELECT * FROM transaction WHERE user_id = ? AND book_id = ? AND return_date = null; ";
+		//TODO : improve transaction retrieval logic
+		String query = "SELECT * FROM transaction WHERE user_id = ? AND book_id = ? ";
 		try (Connection con = MySQLDBUtil.getConnection(null);
-				PreparedStatement psUpdate = con.prepareStatement(query);) {
-			psUpdate.setInt(1, userId);
-			psUpdate.setInt(2, bookId);
-			ResultSet rs = psUpdate.executeQuery();
+				PreparedStatement psSelect = con.prepareStatement(query);) {
+			psSelect.setInt(1, userId);
+			psSelect.setInt(2, bookId);			
+			ResultSet rs = psSelect.executeQuery();
 			if (rs.next()) {
 				return loadTransaction(rs);
 			}

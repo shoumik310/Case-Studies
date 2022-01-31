@@ -1,6 +1,7 @@
 package com.libraryApp;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,7 +51,11 @@ public class Trial {
 		try (Connection con = MySQLDBUtil.getConnection(null);
 				PreparedStatement ps = con.prepareStatement("Select * from book");) {
 
+
 		}
+		
+		Date date = new Date();
+		System.out.println(date);
 
 	}
 }

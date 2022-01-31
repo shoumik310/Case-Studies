@@ -6,10 +6,10 @@ ON transaction
 FOR EACH ROW
 BEGIN
 	IF NEW.issue_date IS NULL THEN
-		SET NEW.issue_date = CURRENT_DATE;
+		SET NEW.issue_date = NOW();
 	END IF;
     IF NEW.due_date IS NULL THEN
-		SET NEW.due_date = CURRENT_DATE+14;
+		SET NEW.due_date = NOW() + INTERVAL 14 DAY;
 	END IF;
 END$$
 
