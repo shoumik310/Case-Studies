@@ -26,7 +26,7 @@ public class AddBookMenu implements Menu {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Please enter book title: ");
-		String title = sc.next();
+		String title = sc.nextLine();
 		System.out.println(System.lineSeparator());
 		authorManagementService.getAuthors().forEach(System.out::println);
 		System.out.print("Please enter author id, if does not exist please add author first: ");

@@ -56,7 +56,7 @@ public class BookSelectionMenu implements Menu {
 		}
 		String Error = createTransaction(bookId);
 		if (Error.isEmpty() || Error == null) {
-			System.out.println("Successfully Borrowed Book");
+			System.out.println("Successfully Borrowed Book!"+System.lineSeparator()+"Please return it within 14 Days"+System.lineSeparator()+"After which a fine of 10 will be charged per day");
 			return true;
 		} else {
 			System.out.println(Error);

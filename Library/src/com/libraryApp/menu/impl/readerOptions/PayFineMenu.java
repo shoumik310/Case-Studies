@@ -36,6 +36,7 @@ public class PayFineMenu implements Menu {
 				break;
 			} else if (userInput.equalsIgnoreCase("Y")) {
 				if(userManagementService.PayFine(context.getLoggedInUser().getId())) {
+				context.setLoggedInUser(userManagementService.getUserById(context.getLoggedInUser().getId()));
 				System.out.println("Thank You for Clearing your Fines");
 				}else {
 					System.out.println("We were Unable to Clear your Fines");

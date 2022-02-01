@@ -145,6 +145,7 @@ public class MySQLUserManagementService implements UserManagementService {
 		String query = "UPDATE user SET fine = 0 WHERE id = ? ";
 		try (Connection con = MySQLDBUtil.getConnection(null);
 				PreparedStatement psUpdate = con.prepareStatement(query);) {
+			psUpdate.setInt(1, userId);
 			psUpdate.executeUpdate();
 			return true;
 		} catch (SQLException e) {

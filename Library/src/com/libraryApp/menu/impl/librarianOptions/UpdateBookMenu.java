@@ -37,7 +37,8 @@ public class UpdateBookMenu implements Menu {
 		Book book = bookManagementService.getBooks().get(bookId - 1);
 		System.out.println("You have selected : " + book);
 		System.out.print("Please enter book title, or na to keep same: ");
-		String title = sc.next();
+		sc.nextLine();
+		String title = sc.nextLine();
 		if (!title.equals("na")) {
 			book.setTitle(title);
 		}
