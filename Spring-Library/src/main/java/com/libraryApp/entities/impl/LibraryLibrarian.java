@@ -1,7 +1,6 @@
 package com.libraryApp.entities.impl;
 
 import com.libraryApp.entities.User;
-import com.libraryApp.exceptions.InvalidUserTypeException;
 
 public class LibraryLibrarian implements User {
 	private String firstName;
@@ -70,39 +69,41 @@ public class LibraryLibrarian implements User {
 	}
 
 	public void setFine(int fine) {
-		throw new InvalidUserTypeException("Fine is not applicable for Librarian");
-
+		System.out.println("Invalid function setFine for type Librarian");
 	}
 
 	@Override
 	public void setMembership(Membership membership) {
-		throw new InvalidUserTypeException("Membership Type is not applicable for Librarian");
-
+		System.out.println("Invalid function setMembership for type Librarian");
 	}
 
 	@Override
 	public void setBorrowed(int borrowed) {
-		throw new InvalidUserTypeException("Number borrowed  is not applicable for Librarian");
+		System.out.println("Invalid function setBorrowed for type Librarian");
 	}
 
 	@Override
 	public Membership getMembership() {
-		throw new InvalidUserTypeException("Membership Type is not applicable for Librarian");
+		System.out.println("Invalid function getMembership for type Librarian");
+		return null;
 	}
 
 	@Override
 	public int getBorrowed() {
-		throw new InvalidUserTypeException("Number borrowed  is not applicable for Librarian");
+		System.out.println("Invalid function getBorrowed for type Librarian");
+		return 0;
 	}
 
 	@Override
 	public int getBorrowLimit() {
-		throw new InvalidUserTypeException("Borrow Limit  is not applicable for Librarian");
+		System.out.println("Invalid function setBorrowLimit for type Librarian");
+		return 0;
 	}
 
 	@Override
 	public int getFine() {
-		throw new InvalidUserTypeException("Fine is not applicable for Librarian");
+		System.out.println("Invalid function getFine for type Librarian");
+		return 0;
 	}
 
 	@Override

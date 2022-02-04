@@ -1,7 +1,6 @@
 package com.libraryApp.entities;
 
 import com.libraryApp.entities.impl.Membership;
-import com.libraryApp.exceptions.InvalidUserTypeException;
 
 public interface User {
 	String getEmail();
@@ -20,19 +19,19 @@ public interface User {
 
 	void setPassword(String password);
 
-	void setFine(int fine) throws InvalidUserTypeException;
+	void setFine(int fine);
 
-	void setMembership(Membership membershipType) throws InvalidUserTypeException;
+	void setMembership(Membership membershipType);
 	
 	int getId();
 
-	Membership getMembership() throws InvalidUserTypeException;
+	Membership getMembership();
 
-	int getBorrowed() throws InvalidUserTypeException;
+	int getBorrowed();
 
-	int getBorrowLimit() throws InvalidUserTypeException;
+	int getBorrowLimit();
 
-	int getFine() throws InvalidUserTypeException;
+	int getFine();
 
 	String getFirstName();
 

@@ -1,7 +1,12 @@
 package com.libraryApp.entities.impl;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import com.libraryApp.entities.User;
 
+@Entity
+@Table(name="user")
 public class LibraryReader implements User {
 	private String firstName;
 	private String lastName;
