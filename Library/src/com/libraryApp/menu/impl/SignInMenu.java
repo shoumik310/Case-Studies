@@ -5,6 +5,7 @@ import java.util.Scanner;
 import com.libraryApp.entities.User;
 import com.libraryApp.entities.impl.LibraryLibrarian;
 import com.libraryApp.menu.Menu;
+import com.libraryApp.menu.MenuInput;
 import com.libraryApp.services.UserManagementService;
 import com.libraryApp.services.impl.MySQLUserManagementService;
 import com.libraryApp.session.SessionContext;
@@ -24,8 +25,15 @@ public class SignInMenu implements Menu {
 		printMenuHeader();
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
+		String email;
+		while(true) {
 		System.out.print("Please enter your Email: ");
-		String email = sc.next();
+		email = sc.next();
+		if(checkEmail(email)) {
+			break;
+		}
+		System.out.println(MenuInput.INVALID_INPUT_TEXT);
+		}
 		System.out.print("Please enter your Password: ");
 		String password = sc.next();
 
@@ -51,5 +59,10 @@ public class SignInMenu implements Menu {
 		System.out.println(System.lineSeparator() + "-*-*-*- Sign In -*-*-*-");
 
 	}
+	
+	private Boolean checkEmail(String emailInput) {
+		return emailInput.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+	}
+
 
 }

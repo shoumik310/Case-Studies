@@ -37,8 +37,16 @@ public class SignUpMenu implements Menu {
 		String firstName = sc.next();
 		System.out.print("Please enter your Last Name: ");
 		String lastName = sc.next();
+		String email;
+		while(true) {
 		System.out.print("Please enter your Email: ");
-		String email = sc.next();
+		email = sc.next();
+		if(checkEmail(email)) {
+			break;
+		}
+		System.out.println(MenuInput.INVALID_INPUT_TEXT);
+		}
+		// TODO: Add password hiding
 		System.out.print("Please enter your Password: ");
 		String password = sc.next();
 		String userType;
@@ -102,6 +110,10 @@ public class SignUpMenu implements Menu {
 	public void printMenuHeader() {
 		System.out.println(System.lineSeparator() + "-*-*-*- Sign Up -*-*-*-");
 
+	}
+	
+	private Boolean checkEmail(String emailInput) {
+		return emailInput.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
 	}
 
 }
