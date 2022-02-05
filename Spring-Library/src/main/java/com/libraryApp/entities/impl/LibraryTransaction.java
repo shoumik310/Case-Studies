@@ -2,14 +2,32 @@ package com.libraryApp.entities.impl;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.libraryApp.entities.Transaction;
 
 public class LibraryTransaction implements Transaction {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
 	private int id;
+	
+	@Column(name = "user_id")
 	private int userId;
+	
+	@Column(name = "book_id")
 	private int bookId;
+	
+	@Column
 	private Date issueDate;
+	
+	@Column
 	private Date dueDate;
+	
+	@Column
 	private Date returnDate;
 	
 	public LibraryTransaction(int userId, int bookId) {

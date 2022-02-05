@@ -1,6 +1,6 @@
 package com.libraryApp.entities;
 
-import com.libraryApp.entities.impl.Membership;
+//import com.libraryApp.entities.impl.Membership;
 
 public interface User {
 	String getEmail();
@@ -21,15 +21,13 @@ public interface User {
 
 	void setFine(int fine);
 
-	void setMembership(Membership membershipType);
-	
 	int getId();
 
-	Membership getMembership();
-
+	void setMembershipId(int membershipId);
+	
+	int getMembershipId();
+	
 	int getBorrowed();
-
-	int getBorrowLimit();
 
 	int getFine();
 

@@ -2,32 +2,37 @@ package com.libraryApp.entities.impl;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.libraryApp.entities.Book;
 
 public class LibraryBook implements Book {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
 	private int id;
+
+	@Column
 	private String title;
+
+	@Column
 	private BigDecimal price;
+
+	@Column
 	private int totalQuantity;
-	private int availableQuantity;
-	private Author author;
+
+	@Column
+	private int availableQuantity = totalQuantity;
+
+	@Column(name = "author_id")
+	private int authorId;
+
+//	private Author author;
 
 	public LibraryBook() {
-	}
-
-	public LibraryBook(String title, BigDecimal price, int totalQuantity, Author author) {
-		super();
-		this.title = title;
-		this.price = price;
-		this.totalQuantity = totalQuantity;
-	}
-
-	public LibraryBook(int id, String title, Author author, BigDecimal price, int totalQuantity, int availableQuantity) {
-		this.id = id;
-		this.title = title;
-		this.price = price;
-		this.totalQuantity = totalQuantity;
-		this.availableQuantity = availableQuantity;
 	}
 
 	public int getId() {
@@ -70,24 +75,32 @@ public class LibraryBook implements Book {
 		this.availableQuantity = availableQuantity;
 	}
 
-	public Author getAuthor() {
-		return author;
+//	public Author getAuthor() {
+//		return author;
+//	}
+//
+//	public void setAuthor(Author author) {
+//		this.author = author;
+//	}
+
+	public int getAuthorId() {
+		return authorId;
 	}
 
-	public void setAuthor(Author author) {
-		this.author = author;
+	public void setAuthorId(int authorId) {
+		this.authorId = authorId;
 	}
 
 	@Override
 	public String toLimitedString() {
-		return "Book id: " + id + "\t Title: " + title + "\t Remaining: " + availableQuantity + "\t Author: "
-				+ author.getName();
+		return "Book id: " + id + "\t Title: " + title + "\t Remaining: " + availableQuantity + "\t Author: ";
+				//+ author.getName();
 	}
 
 	@Override
 	public String toString() {
 		return "Book id: " + id + "\t Title: " + title + "\t Price: " + price + "\t Stock: " + totalQuantity
-				+ "\t Remaining: " + availableQuantity + "\t Author: " + author.getName();
+				+ "\t Remaining: " + availableQuantity + "\t Author: ";// + author.getName();
 	}
 
 }

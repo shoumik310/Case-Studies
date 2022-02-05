@@ -1,6 +1,10 @@
 package com.libraryApp.entities.impl;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.libraryApp.entities.User;
@@ -8,36 +12,36 @@ import com.libraryApp.entities.User;
 @Entity
 @Table(name="user")
 public class LibraryReader implements User {
-	private String firstName;
-	private String lastName;
-	private String email;
-	private String password;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
 	private int id;
+	
+	@Column(name = "first_name")
+	private String firstName;
+	
+	@Column(name = "last_name")
+	private String lastName;
+	
+	@Column
+	private String email;
+	
+	@Column
+	private String password;
+	
+	@Column
 	private int fine;
+	
+	@Column
 	private int borrowed;
-	private Membership membership;
+	
+	@Column
+	private int membershipId;
+	
+//	private Membership membership;
 	
 	public LibraryReader() {
-	}
-
-	public LibraryReader(int id, String first_name, String last_name, String email, String password, int fine,
-			int borrowed, Membership membership) {
-		this.firstName = first_name;
-		this.lastName = last_name;
-		this.email = email;
-		this.password = password;
-		this.id = id;
-		this.fine = fine;
-		this.borrowed = borrowed;
-		this.setMembership(membership);
-	}
-
-	public LibraryReader(String first_name, String last_name, String email, String password, Membership membership) {
-		this.firstName = first_name;
-		this.lastName = last_name;
-		this.email = email;
-		this.password = password;
-		this.membership = membership;
 	}
 
 	public String getFirstName() {
@@ -95,24 +99,19 @@ public class LibraryReader implements User {
 	public void setBorrowed(int borrowed) {
 		this.borrowed = borrowed;
 	}
-
-	public int getBorrowLimit() {
-		return membership.getBorrowLimit();
+	public int getMembershipId() {
+		return membershipId;
 	}
 
-	public Membership getMembership() {
-		return membership;
-	}
-
-	public void setMembership(Membership membership) {
-		this.membership = membership;
+	public void setMembershipId(int membershipId) {
+		this.membershipId = membershipId;
 	}
 
 	@Override
 	public String toString() {
 		return "User id: " + id + "\t Name: " + firstName + " " + lastName + "\t Email: " + email + "\t Fine: " + fine
-				+ "\t Borrowed: " + borrowed + "\t Limit: " + membership.getBorrowLimit() + "\t Membership:"
-				+ membership.getName();
+				+ "\t Borrowed: " + borrowed + "\t Limit: " ;//+ membership.getBorrowLimit() + "\t Membership:"
+//				+ membership.getName();
 	}
 
 }

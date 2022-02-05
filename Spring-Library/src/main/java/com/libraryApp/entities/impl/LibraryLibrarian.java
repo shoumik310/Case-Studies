@@ -1,29 +1,29 @@
 package com.libraryApp.entities.impl;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.libraryApp.entities.User;
 
 public class LibraryLibrarian implements User {
-	private String firstName;
-	private String lastName;
-	private String email;
-	private String password;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
 	private int id;
 
-	public LibraryLibrarian(int id, String first_name, String last_name, String email, String password) {
-		this.firstName = first_name;
-		this.lastName = last_name;
-		this.email = email;
-		this.password = password;
-		this.id = id;
-	}
+	@Column(name = "first_name")
+	private String firstName;
 
-	public LibraryLibrarian(String first_name, String last_name, String email, String password) {
-		super();
-		this.firstName = first_name;
-		this.lastName = last_name;
-		this.email = email;
-		this.password = password;
-	}
+	@Column(name = "last_name")
+	private String lastName;
+
+	@Column
+	private String email;
+
+	@Column
+	private String password;
 
 	public LibraryLibrarian() {
 	}
@@ -73,7 +73,7 @@ public class LibraryLibrarian implements User {
 	}
 
 	@Override
-	public void setMembership(Membership membership) {
+	public void setMembershipId(int membershipId) {
 		System.out.println("Invalid function setMembership for type Librarian");
 	}
 
@@ -83,20 +83,14 @@ public class LibraryLibrarian implements User {
 	}
 
 	@Override
-	public Membership getMembership() {
+	public int getMembershipId() {
 		System.out.println("Invalid function getMembership for type Librarian");
-		return null;
+		return 0;
 	}
 
 	@Override
 	public int getBorrowed() {
 		System.out.println("Invalid function getBorrowed for type Librarian");
-		return 0;
-	}
-
-	@Override
-	public int getBorrowLimit() {
-		System.out.println("Invalid function setBorrowLimit for type Librarian");
 		return 0;
 	}
 

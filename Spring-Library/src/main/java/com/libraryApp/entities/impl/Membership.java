@@ -2,23 +2,30 @@ package com.libraryApp.entities.impl;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 public class Membership {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
 	private int id;
+
+	@Column
 	private String name;
+
+	@Column
 	private int borrowLimit;
+
+	@Column
 	private String duration;
+
+	@Column
 	private BigDecimal price;
 
 	public Membership() {
-	}
-
-	public Membership(int id, String name, int borrowLimit, String duration, BigDecimal price) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.borrowLimit = borrowLimit;
-		this.duration = duration;
-		this.price = price;
 	}
 
 	public int getId() {
@@ -65,6 +72,5 @@ public class Membership {
 	public String toString() {
 		return id + ". " + name + "\t Duration: " + duration + "\t Price: " + price;
 	}
-	
-	
+
 }

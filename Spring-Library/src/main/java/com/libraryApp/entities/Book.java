@@ -2,7 +2,7 @@ package com.libraryApp.entities;
 
 import java.math.BigDecimal;
 
-import com.libraryApp.entities.impl.Author;
+//import com.libraryApp.entities.impl.Author;
 
 public interface Book {
 
@@ -10,7 +10,7 @@ public interface Book {
 	
 	void setId(int id);
 	
-	void setAuthor(Author author);
+//	void setAuthor(Author author);
 	
 	public void setTitle(String title);
 
@@ -20,7 +20,11 @@ public interface Book {
 	
 	String getTitle();
 	
-	Author getAuthor();
+//	Author getAuthor();
+	
+	void setAuthorId(int authorId);
+	
+	int getAuthorId();
 	
 	int getTotalQuantity();
 	
