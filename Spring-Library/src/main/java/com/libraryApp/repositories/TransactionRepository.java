@@ -9,8 +9,8 @@ import com.libraryApp.entities.Reader;
 import com.libraryApp.entities.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-	
-		Boolean existsByReaderAndBookAndReturnDateNull(Reader reader, Book book);
 
-		List<Transaction> findByReaderAndBookAndReturnDateNull(Reader reader, Book book);
+	Boolean existsByReaderAndBookAndReturnDateNull(Reader reader, Book book);
+
+	List<Transaction> findByReaderAndBookAndReturnDateNull(Reader reader, Book book);
 }

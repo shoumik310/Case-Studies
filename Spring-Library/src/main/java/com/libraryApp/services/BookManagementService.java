@@ -11,10 +11,10 @@ import com.libraryApp.repositories.BookRepository;
 
 @Service
 public class BookManagementService {
-	
+
 	@Autowired
 	private BookRepository bookRepo;
-	
+
 	public void addOrUpdateBook(Book book) {
 		bookRepo.save(book);
 	}
@@ -22,20 +22,20 @@ public class BookManagementService {
 	public void removeBook(int bookId) {
 		bookRepo.deleteById(bookId);
 	}
-	
+
 	public Book getBookById(int bookId) {
 		return bookRepo.getById(bookId);
 	}
 
-	public List<Book> getBooks(){
+	public List<Book> getBooks() {
 		return bookRepo.findAll();
 	}
-	
-	public List<Book> getAvailableBooks(){
-		return bookRepo.findAll().stream().filter(book -> book.getAvailableQuantity()>0).collect(Collectors.toList());
+
+	public List<Book> getAvailableBooks() {
+		return bookRepo.findAll().stream().filter(book -> book.getAvailableQuantity() > 0).collect(Collectors.toList());
 	}
-	
-//	List<Book> getBorrowedBooks(int userId){
-//		
-//	}
+
+	public List<Book> getBorrowedBooks(int readerId) {
+		return bookRepo.findBorrowedBooksByReaderID(readerId);
+	}
 }

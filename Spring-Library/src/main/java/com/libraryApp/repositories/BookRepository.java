@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.libraryApp.entities.Book;
 
-public interface BookRepository extends JpaRepository<Book, Integer>{
+public interface BookRepository extends JpaRepository<Book, Integer> {
 
-//	@Query("SELECT b from Book b join Transaction ON b.id = t.book_id WHERE t.user_id = ?1 AND t.return_date IS NULL;")
-//	List<Book> findBookBorrowed();
-	
+	@Query(value = "SELECT * from Book b join Transaction t ON b.id = t.book_id WHERE t.reader_id = ?1 AND t.return_date IS NULL;", nativeQuery = true)
+	List<Book> findBorrowedBooksByReaderID(int readerId);
+
 }

@@ -27,7 +27,7 @@ public class Book {
 
 	@Column(name = "available_quantity")
 	private int availableQuantity = totalQuantity;
-	
+
 	@OneToMany(mappedBy = "book")
 	Set<Transaction> transactions;
 

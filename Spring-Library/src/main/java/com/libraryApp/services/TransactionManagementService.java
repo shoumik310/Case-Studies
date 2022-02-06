@@ -18,56 +18,56 @@ import com.libraryApp.entities.Transaction;
 
 @Service
 public class TransactionManagementService {
-	
+
 	private final int DAILY_FINE_AMOUNT = 10;
 
 	@Autowired
 	TransactionRepository transactionRepo;
-	
+
 	@Autowired
 	ReaderRepository readerRepo;
-	
+
 	@Autowired
 	BookRepository bookRepo;
-	
+
 	@Transactional
 	public String addTransaction(Transaction transaction) {
 		Reader reader = transaction.getReader();
 		Book book = transaction.getBook();
-		if(book.getAvailableQuantity()<=0) {
+		if (book.getAvailableQuantity() <= 0) {
 			return "Book Unavailable";
-		}else if(reader.getFine()!=0) {
+		} else if (reader.getFine() != 0) {
 			return "Unpaid Fine";
-		}else if(transactionRepo.existsByReaderAndBookAndReturnDateNull(reader, book)) {
+		} else if (transactionRepo.existsByReaderAndBookAndReturnDateNull(reader, book)) {
 			return "Book Already Borrowed";
 		}
 		transactionRepo.save(transaction);
-		reader.setBorrowed(reader.getBorrowed()+1);
-		book.setAvailableQuantity(book.getAvailableQuantity()-1);
+		reader.setBorrowed(reader.getBorrowed() + 1);
+		book.setAvailableQuantity(book.getAvailableQuantity() - 1);
 		readerRepo.save(reader);
 		bookRepo.save(book);
 		return "";
 	}
-	
+
 	@Transactional
 	public int returnBook(Reader reader, Book book) {
 		List<Transaction> transactions = transactionRepo.findByReaderAndBookAndReturnDateNull(reader, book);
-		int fine =0;
-		if(transactions.size()==0) {
+		int fine = 0;
+		if (transactions.size() == 0) {
 			return -1;
 		}
-		for(Transaction transaction:transactions) {
+		for (Transaction transaction : transactions) {
 			transaction.setReturnDate(LocalDate.now());
 			long diff = (ChronoUnit.DAYS.between(transaction.getDueDate(), transaction.getReturnDate()));
-			fine+=DAILY_FINE_AMOUNT*(diff>=0?diff:0);
+			fine += DAILY_FINE_AMOUNT * (diff >= 0 ? diff : 0);
 			transactionRepo.save(transaction);
-			reader.setBorrowed(reader.getBorrowed()-1);
-			book.setAvailableQuantity(book.getAvailableQuantity()+1);
+			reader.setBorrowed(reader.getBorrowed() - 1);
+			book.setAvailableQuantity(book.getAvailableQuantity() + 1);
 		}
-		reader.setFine(fine);
+		reader.setFine(reader.getFine() + fine);
 		readerRepo.save(reader);
 		bookRepo.save(book);
 		return fine;
 	}
-	
+
 }

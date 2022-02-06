@@ -33,7 +33,7 @@ public class LibrarianController {
 		librarian = librarianManagementService.getLibrarianByEmail(email);
 		if (librarian != null && librarian.getUserType().equals("librarian")
 				&& librarian.getPassword().equals(password)) {
-			return "Logged In Succesfully"+System.lineSeparator()+librarian.toString();
+			return "Logged In Succesfully" + System.lineSeparator() + librarian.toString();
 		} else {
 			librarian = null;
 			return "Invalid email and/or password";
@@ -61,7 +61,7 @@ public class LibrarianController {
 		librarian = null;
 		return "Signed Out";
 	}
-	
+
 	@PostMapping("books/add")
 	public Book addBook(@RequestBody Book book) {
 		if (librarian == null) {
@@ -70,7 +70,7 @@ public class LibrarianController {
 		bookManagementService.addOrUpdateBook(book);
 		return bookManagementService.getBookById(book.getId());
 	}
-	
+
 	@PostMapping("books/update")
 	public Book updateBook(@RequestBody Book book) {
 		if (librarian == null) {
@@ -79,7 +79,7 @@ public class LibrarianController {
 		bookManagementService.addOrUpdateBook(book);
 		return bookManagementService.getBookById(book.getId());
 	}
-	
+
 	@RequestMapping("books/delete/{id}")
 	public String deleteBook(@PathVariable("id") int bookId) {
 		if (librarian == null) {

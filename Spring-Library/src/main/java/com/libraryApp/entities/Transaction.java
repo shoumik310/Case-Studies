@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "transaction")
-public class Transaction{
+public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
@@ -34,12 +34,12 @@ public class Transaction{
 	private LocalDate dueDate = LocalDate.now().plusDays(14);
 
 	@Column(name = "return_date")
-	private LocalDate returnDate=null;
+	private LocalDate returnDate = null;
 
 	{
 		this.returnDate = null;
 	}
-		
+
 	public Transaction(Reader reader, Book book) {
 		this.reader = reader;
 		this.book = book;

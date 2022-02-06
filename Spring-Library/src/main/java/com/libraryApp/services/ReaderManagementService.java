@@ -12,10 +12,10 @@ import com.libraryApp.repositories.ReaderRepository;
 
 @Service
 public class ReaderManagementService {
-	
+
 	@Autowired
 	ReaderRepository readerRepo;
-	
+
 	public void addReader(Reader reader) {
 		readerRepo.save(reader);
 	}
@@ -31,10 +31,10 @@ public class ReaderManagementService {
 	// TODO: implement authUser
 //	Boolean authUser();
 
-	public List<Reader> getReaders(){
+	public List<Reader> getReaders() {
 		return readerRepo.findAll();
 	}
-	
+
 	@Transactional
 	public void PayFine(int userId) {
 		readerRepo.setFineToZeroFor(userId);
