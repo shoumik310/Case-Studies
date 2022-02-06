@@ -1,47 +1,55 @@
-package com.libraryApp.entities.impl;
+package com.libraryApp.entities;
+
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.libraryApp.entities.User;
 
 @Entity
 @Table(name="user")
-public class LibraryReader implements User {
+public class Reader implements User{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
 	
-	@Column(name = "first_name")
+	@Column(name = "first_name", nullable = false)
 	private String firstName;
 	
-	@Column(name = "last_name")
+	@Column(name = "last_name", nullable = false)
 	private String lastName;
-	
-	@Column
+
+	@Column(unique = true, nullable = false)
 	private String email;
-	
-	@Column
+
+	@Column(nullable = false)
 	private String password;
+	@Column(columnDefinition = "INT DEFAULT 0")
+	private int fine=0;
+	@Column(columnDefinition = "INT DEFAULT 0")
+	private int borrowed=0;
 	
-	@Column
-	private int fine;
+	private String userType = "reader";
+//	
+//	
+//	@OneToMany(mappedBy = "fkreader")
+//	Set<Reader> readers;
 	
-	@Column
-	private int borrowed;
-	
-	@Column
-	private int membershipId;
-	
-//	private Membership membership;
-	
-	public LibraryReader() {
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public Reader() {
 	}
 
 	public String getFirstName() {
@@ -99,19 +107,11 @@ public class LibraryReader implements User {
 	public void setBorrowed(int borrowed) {
 		this.borrowed = borrowed;
 	}
-	public int getMembershipId() {
-		return membershipId;
-	}
-
-	public void setMembershipId(int membershipId) {
-		this.membershipId = membershipId;
-	}
 
 	@Override
 	public String toString() {
 		return "User id: " + id + "\t Name: " + firstName + " " + lastName + "\t Email: " + email + "\t Fine: " + fine
-				+ "\t Borrowed: " + borrowed + "\t Limit: " ;//+ membership.getBorrowLimit() + "\t Membership:"
-//				+ membership.getName();
+				+ "\t Borrowed: " + borrowed;
 	}
 
 }

@@ -1,29 +1,96 @@
 package com.libraryApp.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-public interface Transaction {
-	Date getDueDate();
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-	Date getIssueDate();
+//@Entity
+//@Table(name = "transaction")
+public class Transaction{
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column
+	private int id;
 
-	void setDueDate(Date dueDate);
+	@ManyToOne()
+	@JoinColumn(name = "reader_id", referencedColumnName = "id")
+	private Reader reader;
 
-	void setIssueDate(Date issueDate);
+	@ManyToOne()
+	@JoinColumn(name = "book_id", referencedColumnName = "id")
+	private Book book;
 
-	void setBookId(int bookId);
+	@Column(name = "issue_date")
+	private LocalDate issueDate = LocalDate.now();
 
-	void setUserId(int userId);
+	@Column(name = "due_date")
+	private LocalDate dueDate = LocalDate.now().plusDays(14);
 
-	void setId(int id);
+	@Column(name = "return_date")
+	private LocalDate returnDate=null;
 
-	int getBookId();
+	public Transaction() {
+		this.returnDate = null;
+	}
 
-	int getUserId();
+	public int getId() {
+		return id;
+	}
 
-	int getId();
+	public void setId(int id) {
+		this.id = id;
+	}
 
-	void setReturnDate(Date returnDate);
+	public Reader getReader() {
+		return reader;
+	}
 
-	Date getReturnDate();
+	public void setReader(Reader reader) {
+		this.reader = reader;
+	}
+
+//	public Book getBook() {
+//		return book;
+//	}
+//
+//	public void setBook(Book book) {
+//		this.book = book;
+//	}
+
+	public LocalDate getIssueDate() {
+		return issueDate;
+	}
+
+	public void setIssueDate(LocalDate issueDate) {
+		this.issueDate = issueDate;
+	}
+
+	public LocalDate getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(LocalDate dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public LocalDate getReturnDate() {
+		return returnDate;
+	}
+
+	public void setReturnDate(LocalDate returnDate) {
+		this.returnDate = returnDate;
+	}
+
+	@Override
+	public String toString() {
+		return "LibraryTransaction [id=" + id + ", reader=" + reader + ", book=" + "book" + ", issueDate=" + issueDate
+				+ ", dueDate=" + dueDate + ", returnDate=" + returnDate + "]";
+	}
 }
