@@ -11,16 +11,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name = "transaction")
+@Entity
+@Table(name = "transaction")
 public class Transaction{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
 	private int id;
 
-	@ManyToOne()
-	@JoinColumn(name = "reader_id", referencedColumnName = "id")
+	@ManyToOne
+	@JoinColumn(name = "reader_id", referencedColumnName = "id", nullable = false)
 	private Reader reader;
 
 	@ManyToOne()
@@ -36,8 +36,16 @@ public class Transaction{
 	@Column(name = "return_date")
 	private LocalDate returnDate=null;
 
-	public Transaction() {
+	{
 		this.returnDate = null;
+	}
+		
+	public Transaction(Reader reader, Book book) {
+		this.reader = reader;
+		this.book = book;
+	}
+
+	public Transaction() {
 	}
 
 	public int getId() {
@@ -56,13 +64,13 @@ public class Transaction{
 		this.reader = reader;
 	}
 
-//	public Book getBook() {
-//		return book;
-//	}
-//
-//	public void setBook(Book book) {
-//		this.book = book;
-//	}
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
+	}
 
 	public LocalDate getIssueDate() {
 		return issueDate;
@@ -90,7 +98,7 @@ public class Transaction{
 
 	@Override
 	public String toString() {
-		return "LibraryTransaction [id=" + id + ", reader=" + reader + ", book=" + "book" + ", issueDate=" + issueDate
+		return "LibraryTransaction [id=" + id + ", reader=" + reader + ", book=" + book + ", issueDate=" + issueDate
 				+ ", dueDate=" + dueDate + ", returnDate=" + returnDate + "]";
 	}
 }

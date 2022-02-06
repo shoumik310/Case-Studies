@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class Librarian implements User {
+public class Librarian {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column

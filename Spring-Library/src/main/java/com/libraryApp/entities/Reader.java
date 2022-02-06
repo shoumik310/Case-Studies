@@ -11,17 +11,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="user")
-public class Reader implements User{
-	
+@Table(name = "user")
+public class Reader {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
-	
+
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
-	
+
 	@Column(name = "last_name", nullable = false)
 	private String lastName;
 
@@ -31,16 +31,15 @@ public class Reader implements User{
 	@Column(nullable = false)
 	private String password;
 	@Column(columnDefinition = "INT DEFAULT 0")
-	private int fine=0;
+	private int fine = 0;
 	@Column(columnDefinition = "INT DEFAULT 0")
-	private int borrowed=0;
-	
+	private int borrowed = 0;
+
 	private String userType = "reader";
-//	
-//	
-//	@OneToMany(mappedBy = "fkreader")
-//	Set<Reader> readers;
-	
+
+	@OneToMany(mappedBy = "reader")
+	Set<Transaction> transactions;
+
 	public String getUserType() {
 		return userType;
 	}

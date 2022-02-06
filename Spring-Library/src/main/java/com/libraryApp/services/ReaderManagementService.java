@@ -2,11 +2,12 @@ package com.libraryApp.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.libraryApp.entities.Reader;
-import com.libraryApp.entities.User;
 import com.libraryApp.repositories.ReaderRepository;
 
 @Service
@@ -33,8 +34,9 @@ public class ReaderManagementService {
 	public List<Reader> getReaders(){
 		return readerRepo.findAll();
 	}
-
-//	public void PayFine(int userId) {
-//		readerRepo.setFineToZeroById(userId);
-//	}
+	
+	@Transactional
+	public void PayFine(int userId) {
+		readerRepo.setFineToZeroFor(userId);
+	}
 }

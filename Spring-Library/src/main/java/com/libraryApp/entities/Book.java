@@ -28,8 +28,8 @@ public class Book {
 	@Column(name = "available_quantity")
 	private int availableQuantity = totalQuantity;
 	
-//	@OneToMany(mappedBy = "book")
-//	Set<Book> books;
+	@OneToMany(mappedBy = "book")
+	Set<Transaction> transactions;
 
 	public Book() {
 	}
