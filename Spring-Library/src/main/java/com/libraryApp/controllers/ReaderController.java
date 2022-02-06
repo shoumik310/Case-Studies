@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,16 +30,43 @@ public class ReaderController {
 	@Autowired
 	TransactionManagementService transactionManagementService;
 
-	@GetMapping("/login/{email}/{password}")
-	public String loginReader(@PathVariable("email") String email, @PathVariable("password") String password) {
-		reader = readerManagementService.getReaderByEmail(email);
-		if (reader != null && reader.getUserType().equals("reader") && reader.getPassword().equals(password)) {
-			return "Logged In Succesfully" + System.lineSeparator() + reader.toString();
+	@SuppressWarnings("unused")
+	private static class LoginInput {
+		String email;
+		String password;
+
+		public void setEmail(String email) {
+			this.email = email;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+
+	}
+
+	@PostMapping("/login")
+	public String loginReader(@RequestBody LoginInput loginInput) {
+		reader = readerManagementService.getReaderByEmail(loginInput.email);
+		if (reader != null && reader.getUserType().equals("reader")
+				&& reader.getPassword().equals(loginInput.password)) {
+			return "Logged In Successfully" + System.lineSeparator() + reader.toString();
 		} else {
 			reader = null;
-			return "Invalid email and password";
+			return "Invalid email and/or password";
 		}
 	}
+
+//	@GetMapping("/login/{email}/{password}")
+//	public String loginReader(@PathVariable("email") String email, @PathVariable("password") String password) {
+//		reader = readerManagementService.getReaderByEmail(email);
+//		if (reader != null && reader.getUserType().equals("reader") && reader.getPassword().equals(password)) {
+//			return "Logged In Successfully" + System.lineSeparator() + reader.toString();
+//		} else {
+//			reader = null;
+//			return "Invalid email and password";
+//		}
+//	}
 
 	@GetMapping("/books")
 	public List<Book> getAllBooks() {
@@ -66,10 +92,10 @@ public class ReaderController {
 		return reader;
 	}
 
-	@GetMapping("/signout")
-	public String signOut() {
+	@GetMapping("/logout")
+	public String logOut() {
 		reader = null;
-		return "Signed Out";
+		return "Logged Out";
 	}
 
 	static private class BookInput {
@@ -119,7 +145,7 @@ public class ReaderController {
 		return fines;
 	}
 
-	@RequestMapping("/payfine")
+	@PostMapping("/payfine")
 	public String payFine() {
 		if (reader == null) {
 			return "No reader signed in";

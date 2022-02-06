@@ -15,10 +15,22 @@ public class BookManagementService {
 	@Autowired
 	private BookRepository bookRepo;
 
-	public void addOrUpdateBook(Book book) {
-		bookRepo.save(book);
+	public Book addBook(Book book) {
+		System.out.println(book);
+		book.setAvailableQuantity(book.getTotalQuantity());
+		System.out.println(book);
+		return bookRepo.save(book);
 	}
-
+	
+	public Book updateBook(Book book) {
+		Book prevBook = getBookById(book.getId());
+		System.out.println(book);
+		int newAvailable = book.getTotalQuantity() - prevBook.getTotalQuantity() + prevBook.getAvailableQuantity();
+		book.setAvailableQuantity(newAvailable);
+		System.out.println(book);
+		return bookRepo.save(book);
+	}
+	
 	public void removeBook(int bookId) {
 		bookRepo.deleteById(bookId);
 	}

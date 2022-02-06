@@ -11,13 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "book")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(nullable = false)
+	@Column(unique = true, nullable = false)
 	private String title;
 	@Column(nullable = false)
 	private BigDecimal price;

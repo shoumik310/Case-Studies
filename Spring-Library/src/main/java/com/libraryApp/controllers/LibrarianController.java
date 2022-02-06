@@ -1,8 +1,10 @@
 package com.libraryApp.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,17 +30,44 @@ public class LibrarianController {
 	@Autowired
 	private BookManagementService bookManagementService;
 
-	@GetMapping("/login/{email}/{password}")
-	public String loginLibrarian(@PathVariable("email") String email, @PathVariable("password") String password) {
-		librarian = librarianManagementService.getLibrarianByEmail(email);
+	@SuppressWarnings("unused")
+	private static class LoginInput {
+		String email;
+		String password;
+
+		public void setEmail(String email) {
+			this.email = email;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+
+	}
+
+	@PostMapping("/login")
+	public String loginLibrarian(@RequestBody LoginInput loginInput) {
+		librarian = librarianManagementService.getLibrarianByEmail(loginInput.email);
 		if (librarian != null && librarian.getUserType().equals("librarian")
-				&& librarian.getPassword().equals(password)) {
-			return "Logged In Succesfully" + System.lineSeparator() + librarian.toString();
+				&& librarian.getPassword().equals(loginInput.password)) {
+			return "Logged In Successfully" + System.lineSeparator() + librarian.toString();
 		} else {
 			librarian = null;
 			return "Invalid email and/or password";
 		}
 	}
+
+//	@GetMapping("/login/{email}/{password}")
+//	public String loginLibrarian(@PathVariable("email") String email, @PathVariable("password") String password) {
+//		librarian = librarianManagementService.getLibrarianByEmail(email);
+//		if (librarian != null && librarian.getUserType().equals("librarian")
+//				&& librarian.getPassword().equals(password)) {
+//			return "Logged In Successfully" + System.lineSeparator() + librarian.toString();
+//		} else {
+//			librarian = null;
+//			return "Invalid email and/or password";
+//		}
+//	}
 
 	@GetMapping("/books")
 	public List<Book> getAllBooks() {
@@ -53,13 +82,13 @@ public class LibrarianController {
 		if (librarian == null) {
 			return null;
 		}
-		return readerManagementService.getReaders();
+		return readerManagementService.getReaders().stream().peek(reader -> reader.setPassword("******")).collect(Collectors.toList());
 	}
 
-	@GetMapping("/signout")
-	public String signOut() {
+	@GetMapping("/logout")
+	public String logOut() {
 		librarian = null;
-		return "Signed Out";
+		return "Logged Out";
 	}
 
 	@PostMapping("books/add")
@@ -67,8 +96,7 @@ public class LibrarianController {
 		if (librarian == null) {
 			return null;
 		}
-		bookManagementService.addOrUpdateBook(book);
-		return bookManagementService.getBookById(book.getId());
+		return bookManagementService.addBook(book);
 	}
 
 	@PostMapping("books/update")
@@ -76,14 +104,14 @@ public class LibrarianController {
 		if (librarian == null) {
 			return null;
 		}
-		bookManagementService.addOrUpdateBook(book);
-		return bookManagementService.getBookById(book.getId());
+
+		return bookManagementService.updateBook(book);
 	}
 
-	@RequestMapping("books/delete/{id}")
+	@DeleteMapping("books/delete/{id}")
 	public String deleteBook(@PathVariable("id") int bookId) {
 		if (librarian == null) {
-			return null;
+			return "No Librarian Logged In";
 		}
 		bookManagementService.removeBook(bookId);
 		return "Deleted";
